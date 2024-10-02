@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_5493e1d1079daba42942fe6e6f9916eb {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+        
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_5493e1d1079daba42942fe6e6f9916eb" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_5493e1d1079daba42942fe6e6f9916eb = L.map(
+                "map_5493e1d1079daba42942fe6e6f9916eb",
+                {
+                    center: [0.0, 0.0],
+                    crs: L.CRS.EPSG3857,
+                    maxBounds: [[-90, -180], [90, 180]],
+                    zoom: 2,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_643c0e222aa09031deb709a2bee437e4 = L.tileLayer(
+                "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+                {"attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e", "detectRetina": false, "maxNativeZoom": 20, "maxZoom": 2, "minZoom": 2, "noWrap": false, "opacity": 1, "subdomains": "abcd", "tms": false}
+            );
+        
+    
+            tile_layer_643c0e222aa09031deb709a2bee437e4.addTo(map_5493e1d1079daba42942fe6e6f9916eb);
+        
+    
+            var marker_747d2607c25c47911b4822ce089f4775 = L.marker(
+                [37.0902, -95.7129],
+                {}
+            ).addTo(map_5493e1d1079daba42942fe6e6f9916eb);
+        
+    
+            var icon_c2c97f2074bdde1eb1fc986e4a486752 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "darkblue", "prefix": "glyphicon"}
+            );
+            marker_747d2607c25c47911b4822ce089f4775.setIcon(icon_c2c97f2074bdde1eb1fc986e4a486752);
+        
+    
+        var popup_56c8b35a8d17488041fd2668ce705998 = L.popup({"maxWidth": 300});
+
+        
+            
+                var html_081196514d740c32b0dbba3e3a3bd4bd = $(`<div id="html_081196514d740c32b0dbba3e3a3bd4bd" style="width: 100.0%; height: 100.0%;">             <h4 style="margin:0;padding:0;">North America</h4>             <p style="margin:0;padding:0;">Total de Produtos Vendidos: 40948</p>             <p style="margin:0;padding:0;">Faturamento Desktop: 10636206.29</p>             <p style="margin:0;padding:0;">Faturamento Laptop: 8789977.0</p>             <p style="margin:0;padding:0;">Faturamento Smartphone: 10017143.7</p>             <p style="margin:0;padding:0;">Faturamento Smartwatch: 11461933.05</p>             <p style="margin:0;padding:0;">Faturamento Tablet: 9342216.42</p>         </div>`)[0];
+                popup_56c8b35a8d17488041fd2668ce705998.setContent(html_081196514d740c32b0dbba3e3a3bd4bd);
+            
+        
+
+        marker_747d2607c25c47911b4822ce089f4775.bindPopup(popup_56c8b35a8d17488041fd2668ce705998)
+        ;
+
+        
+    
+    
+            var marker_f77a9bc7bdded141230f419be49177d9 = L.marker(
+                [-8.7832, -55.4915],
+                {}
+            ).addTo(map_5493e1d1079daba42942fe6e6f9916eb);
+        
+    
+            var icon_00d5ee5b85acca0354eac203be47e33d = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "darkblue", "prefix": "glyphicon"}
+            );
+            marker_f77a9bc7bdded141230f419be49177d9.setIcon(icon_00d5ee5b85acca0354eac203be47e33d);
+        
+    
+        var popup_2bacad484cacf099d1d41f6372353c5c = L.popup({"maxWidth": 300});
+
+        
+            
+                var html_21761faf9d924e7fe246252162d262c5 = $(`<div id="html_21761faf9d924e7fe246252162d262c5" style="width: 100.0%; height: 100.0%;">             <h4 style="margin:0;padding:0;">South America</h4>             <p style="margin:0;padding:0;">Total de Produtos Vendidos: 41410</p>             <p style="margin:0;padding:0;">Faturamento Desktop: 10197036.46</p>             <p style="margin:0;padding:0;">Faturamento Laptop: 11674552.98</p>             <p style="margin:0;padding:0;">Faturamento Smartphone: 10898041.49</p>             <p style="margin:0;padding:0;">Faturamento Smartwatch: 11085357.58</p>             <p style="margin:0;padding:0;">Faturamento Tablet: 9353924.9</p>         </div>`)[0];
+                popup_2bacad484cacf099d1d41f6372353c5c.setContent(html_21761faf9d924e7fe246252162d262c5);
+            
+        
+
+        marker_f77a9bc7bdded141230f419be49177d9.bindPopup(popup_2bacad484cacf099d1d41f6372353c5c)
+        ;
+
+        
+    
+    
+            var marker_e5c141ed63130666acf0baee6e827170 = L.marker(
+                [49.526, 14.2551],
+                {}
+            ).addTo(map_5493e1d1079daba42942fe6e6f9916eb);
+        
+    
+            var icon_499edd54e19bdb309632de8c4b58b52b = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "darkblue", "prefix": "glyphicon"}
+            );
+            marker_e5c141ed63130666acf0baee6e827170.setIcon(icon_499edd54e19bdb309632de8c4b58b52b);
+        
+    
+        var popup_64fbd1631a3f83a0df59c402f13631f3 = L.popup({"maxWidth": 300});
+
+        
+            
+                var html_2195ab2c577d244be57dfd8ba4449de4 = $(`<div id="html_2195ab2c577d244be57dfd8ba4449de4" style="width: 100.0%; height: 100.0%;">             <h4 style="margin:0;padding:0;">Europe</h4>             <p style="margin:0;padding:0;">Total de Produtos Vendidos: 45161</p>             <p style="margin:0;padding:0;">Faturamento Desktop: 11675913.85</p>             <p style="margin:0;padding:0;">Faturamento Laptop: 11056384.05</p>             <p style="margin:0;padding:0;">Faturamento Smartphone: 11508128.3</p>             <p style="margin:0;padding:0;">Faturamento Smartwatch: 10329769.0</p>             <p style="margin:0;padding:0;">Faturamento Tablet: 10761622.67</p>         </div>`)[0];
+                popup_64fbd1631a3f83a0df59c402f13631f3.setContent(html_2195ab2c577d244be57dfd8ba4449de4);
+            
+        
+
+        marker_e5c141ed63130666acf0baee6e827170.bindPopup(popup_64fbd1631a3f83a0df59c402f13631f3)
+        ;
+
+        
+    
+    
+            var marker_df7a3171225d4691c5f9ae5c0bc07b95 = L.marker(
+                [34.0479, 80.6197],
+                {}
+            ).addTo(map_5493e1d1079daba42942fe6e6f9916eb);
+        
+    
+            var icon_0848deecece5dc4d04ef07eee2cfd1b5 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "darkblue", "prefix": "glyphicon"}
+            );
+            marker_df7a3171225d4691c5f9ae5c0bc07b95.setIcon(icon_0848deecece5dc4d04ef07eee2cfd1b5);
+        
+    
+        var popup_d66bd5ae24bb35db34f4e79032c63d44 = L.popup({"maxWidth": 300});
+
+        
+            
+                var html_60a2c9975fdf8e0df0393ca2630ee1aa = $(`<div id="html_60a2c9975fdf8e0df0393ca2630ee1aa" style="width: 100.0%; height: 100.0%;">             <h4 style="margin:0;padding:0;">Asia</h4>             <p style="margin:0;padding:0;">Total de Produtos Vendidos: 40469</p>             <p style="margin:0;padding:0;">Faturamento Desktop: 10453064.25</p>             <p style="margin:0;padding:0;">Faturamento Laptop: 9695612.39</p>             <p style="margin:0;padding:0;">Faturamento Smartphone: 11025626.97</p>             <p style="margin:0;padding:0;">Faturamento Smartwatch: 10315282.53</p>             <p style="margin:0;padding:0;">Faturamento Tablet: 10427496.29</p>         </div>`)[0];
+                popup_d66bd5ae24bb35db34f4e79032c63d44.setContent(html_60a2c9975fdf8e0df0393ca2630ee1aa);
+            
+        
+
+        marker_df7a3171225d4691c5f9ae5c0bc07b95.bindPopup(popup_d66bd5ae24bb35db34f4e79032c63d44)
+        ;
+
+        
+    
+    
+            var marker_db5c1f8e47bd34c4b09034f0abb36e69 = L.marker(
+                [5.7832, 24.5085],
+                {}
+            ).addTo(map_5493e1d1079daba42942fe6e6f9916eb);
+        
+    
+            var icon_f4e476c867bc6062ea355360ca728e3f = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "darkblue", "prefix": "glyphicon"}
+            );
+            marker_db5c1f8e47bd34c4b09034f0abb36e69.setIcon(icon_f4e476c867bc6062ea355360ca728e3f);
+        
+    
+        var popup_2a9a7fca2888b0c811cf7db0554a10ed = L.popup({"maxWidth": 300});
+
+        
+            
+                var html_f63af255c21d1cd71dd72ac0fcbae7d7 = $(`<div id="html_f63af255c21d1cd71dd72ac0fcbae7d7" style="width: 100.0%; height: 100.0%;">             <h4 style="margin:0;padding:0;">Africa</h4>             <p style="margin:0;padding:0;">Total de Produtos Vendidos: 42372</p>             <p style="margin:0;padding:0;">Faturamento Desktop: 12036174.71</p>             <p style="margin:0;padding:0;">Faturamento Laptop: 10628806.23</p>             <p style="margin:0;padding:0;">Faturamento Smartphone: 10659125.64</p>             <p style="margin:0;padding:0;">Faturamento Smartwatch: 9873288.31</p>             <p style="margin:0;padding:0;">Faturamento Tablet: 10472110.86</p>         </div>`)[0];
+                popup_2a9a7fca2888b0c811cf7db0554a10ed.setContent(html_f63af255c21d1cd71dd72ac0fcbae7d7);
+            
+        
+
+        marker_db5c1f8e47bd34c4b09034f0abb36e69.bindPopup(popup_2a9a7fca2888b0c811cf7db0554a10ed)
+        ;
+
+        
+    
+    
+            var marker_8f7acf0e0b5550adfd169a6dc0f2d1c7 = L.marker(
+                [-25.2744, 133.7751],
+                {}
+            ).addTo(map_5493e1d1079daba42942fe6e6f9916eb);
+        
+    
+            var icon_a39ee5284f294b8a9e000782aae01da9 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "darkblue", "prefix": "glyphicon"}
+            );
+            marker_8f7acf0e0b5550adfd169a6dc0f2d1c7.setIcon(icon_a39ee5284f294b8a9e000782aae01da9);
+        
+    
+        var popup_67aac96a71a9cab25238ab06093102f5 = L.popup({"maxWidth": 300});
+
+        
+            
+                var html_e94486e25da4e2eaa3d54e5c67787e5d = $(`<div id="html_e94486e25da4e2eaa3d54e5c67787e5d" style="width: 100.0%; height: 100.0%;">             <h4 style="margin:0;padding:0;">Oceania</h4>             <p style="margin:0;padding:0;">Total de Produtos Vendidos: 43306</p>             <p style="margin:0;padding:0;">Faturamento Desktop: 10530420.9</p>             <p style="margin:0;padding:0;">Faturamento Laptop: 9067717.69</p>             <p style="margin:0;padding:0;">Faturamento Smartphone: 12510625.1</p>             <p style="margin:0;padding:0;">Faturamento Smartwatch: 10999002.78</p>             <p style="margin:0;padding:0;">Faturamento Tablet: 11357555.98</p>         </div>`)[0];
+                popup_67aac96a71a9cab25238ab06093102f5.setContent(html_e94486e25da4e2eaa3d54e5c67787e5d);
+            
+        
+
+        marker_8f7acf0e0b5550adfd169a6dc0f2d1c7.bindPopup(popup_67aac96a71a9cab25238ab06093102f5)
+        ;
+
+        
+    
+</script>
+</html>
