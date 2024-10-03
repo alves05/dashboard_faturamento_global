@@ -102,39 +102,6 @@ def base_localizacao(dados, filtro_regiao):
         )
     return localizacao
 
-def mapa(localizacao):
-    coordenadas_centro = [0, 0]
-
-    mapa = folium.Map(
-        location=coordenadas_centro,
-        zoom_start=2,
-        min_zoom=2,
-        max_zoom=3,
-        max_bounds=True,
-        tiles='Cartodb Positron',
-    )
-
-    for loc in localizacao:
-        popup_html = f"""
-            <h1 style="margin:0;padding:0;"><b>{loc['regiao']}</b></h1>
-            <h4 style="margin:0;padding:0;">Vendas Totais: <b>{loc['vendas']:.2f}</b></h4>
-            <h5 style="margin:0;padding:0;"><b>Faturamento detalhado por produto</b></h5>
-            <p style="margin:0;padding:0;">Desktop: <b>{loc['Desktop']:.2f}</b></p>
-            <p style="margin:0;padding:0;">Laptop: <b>{loc['Laptop']:.2f}</b></p>
-            <p style="margin:0;padding:0;">Smartphone: <b>{loc['Smartphone']:.2f}</b></p>
-            <p style="margin:0;padding:0;">Smartwatch: <b>{loc['Smartwatch']:.2f}</b></p>
-            <p style="margin:0;padding:0;">Tablet: <b>{loc['Tablet']:.2f}</b></p>
-        """
-        folium.Marker(
-            location=loc['location'],
-            popup=folium.Popup(popup_html, max_width=300),
-            icon=folium.Icon(color='darkblue', icon='info-sign'),
-        ).add_to(mapa)
-
-    mapa_html = 'mapa.html'
-    mapa.save(mapa_html)
-    return None
-
 def main():
     st.title('Dashboard de Faturamento Global 🌍')
     st.sidebar.title('Filtros')
