@@ -18,34 +18,134 @@ def base_dados():
     dataset['Year'] = dataset['Year'].astype(int)
     return dataset
 
+def filtros_dashbord(dados):
+    regiao = st.sidebar.multiselect(
+        'Filtro de Região',
+        dados['Region'].unique(),
+        default=dados['Region'].unique(),
+    )
+
+    produto = st.sidebar.multiselect(
+        'Filtro de Produto',
+        dados['Product'].unique(),
+        default=dados['Product'].unique(),
+    )
+
+    ano = st.sidebar.multiselect(
+        'Filtro de Ano',
+        dados['Year'].unique(),
+        default=dados['Year'].unique(),
+    )
+    return regiao, produto, ano
+
+def base_localizacao(dados, filtro_regiao):
+    faturamento = dados.groupby('Region')['Total Sales'].sum().reset_index()
+    faturamento_produto = (
+        dados.groupby(['Product', 'Region'])['Total Sales']
+        .sum()
+        .reset_index()
+    )
+
+    localizacao = []
+
+    for r in filtro_regiao:
+        vendas_total = faturamento.loc[
+            faturamento['Region'] == r, 'Total Sales'
+        ].sum()
+
+        if r == 'North America':
+            coordenadas = [37.0902, -95.7129]
+        elif r == 'Europe':
+            coordenadas = [49.5260, 14.2551]
+        elif r == 'South America':
+            coordenadas = [-8.7832, -55.4915]
+        elif r == 'Asia':
+            coordenadas = [34.0479, 80.6197]
+        elif r == 'Africa':
+            coordenadas = [5.7832, 24.5085]
+        elif r == 'Oceania':
+            coordenadas = [-25.2744, 133.7751]
+        else:
+            coordenadas = [0, 0]
+
+        localizacao.append(
+            {
+                'regiao': r,
+                'location': coordenadas,
+                'vendas': vendas_total,
+                'Desktop': faturamento_produto.loc[
+                    (faturamento_produto['Region'] == r)
+                    & (faturamento_produto['Product'] == 'Desktop'),
+                    'Total Sales',
+                ].sum(),
+                'Laptop': faturamento_produto.loc[
+                    (faturamento_produto['Region'] == r)
+                    & (faturamento_produto['Product'] == 'Laptop'),
+                    'Total Sales',
+                ].sum(),
+                'Smartphone': faturamento_produto.loc[
+                    (faturamento_produto['Region'] == r)
+                    & (faturamento_produto['Product'] == 'Smartphone'),
+                    'Total Sales',
+                ].sum(),
+                'Smartwatch': faturamento_produto.loc[
+                    (faturamento_produto['Region'] == r)
+                    & (faturamento_produto['Product'] == 'Smartwatch'),
+                    'Total Sales',
+                ].sum(),
+                'Tablet': faturamento_produto.loc[
+                    (faturamento_produto['Region'] == r)
+                    & (faturamento_produto['Product'] == 'Tablet'),
+                    'Total Sales',
+                ].sum(),
+            }
+        )
+    return localizacao
+
+def mapa(localizacao):
+    coordenadas_centro = [0, 0]
+
+    mapa = folium.Map(
+        location=coordenadas_centro,
+        zoom_start=2,
+        min_zoom=2,
+        max_zoom=3,
+        max_bounds=True,
+        tiles='Cartodb Positron',
+    )
+
+    for loc in localizacao:
+        popup_html = f"""
+            <h1 style="margin:0;padding:0;"><b>{loc['regiao']}</b></h1>
+            <h4 style="margin:0;padding:0;">Vendas Totais: <b>{loc['vendas']:.2f}</b></h4>
+            <h5 style="margin:0;padding:0;"><b>Faturamento detalhado por produto</b></h5>
+            <p style="margin:0;padding:0;">Desktop: <b>{loc['Desktop']:.2f}</b></p>
+            <p style="margin:0;padding:0;">Laptop: <b>{loc['Laptop']:.2f}</b></p>
+            <p style="margin:0;padding:0;">Smartphone: <b>{loc['Smartphone']:.2f}</b></p>
+            <p style="margin:0;padding:0;">Smartwatch: <b>{loc['Smartwatch']:.2f}</b></p>
+            <p style="margin:0;padding:0;">Tablet: <b>{loc['Tablet']:.2f}</b></p>
+        """
+        folium.Marker(
+            location=loc['location'],
+            popup=folium.Popup(popup_html, max_width=300),
+            icon=folium.Icon(color='darkblue', icon='info-sign'),
+        ).add_to(mapa)
+
+    mapa_html = 'mapa.html'
+    mapa.save(mapa_html)
+    return None
 
 def main():
-    st.title('Dashboar de Faturamento Global 🌍')
+    st.title('Dashboard de Faturamento Global 🌍')
     st.sidebar.title('Filtros')
 
     # Base de dados
     dataset = base_dados()
 
     # Filtros
-    regiao = st.sidebar.multiselect(
-        'Filtro de Região',
-        dataset['Region'].unique(),
-        default=dataset['Region'].unique(),
-    )
+    regiao, produto, ano = filtros_dashbord(dataset)
 
-    produto = st.sidebar.multiselect(
-        'Filtro de Produto',
-        dataset['Product'].unique(),
-        default=dataset['Product'].unique(),
-    )
-
-    ano = st.sidebar.multiselect(
-        'Filtro de Ano',
-        dataset['Year'].unique(),
-        default=dataset['Year'].unique(),
-    )
-
-    if regiao:
+    if regiao and produto and ano:
         filtros = dataset[
             dataset['Region'].isin(regiao)
             & dataset['Product'].isin(produto)
@@ -55,309 +155,30 @@ def main():
         filtros = dataset
 
     # Base de dados para o folium
-    df = (
-        dataset[['Region', 'Quantity Sold']]
-        .groupby('Region')
-        .sum()
-        .reset_index()
-    )
-    df_p = (
-        dataset.groupby(['Product', 'Region'])['Total Sales']
-        .sum()
-        .reset_index()
-    )
+    localizacao = base_localizacao(filtros, regiao)
 
-    localizacao = localizacao = [
-        {
-            'regiao': df.iloc[3, 0],
-            'location': [37.0902, -95.7129],
-            'vendas': df.iloc[3, 1],
-            'Desktop': round(
-                df_p.loc[
-                    (df_p['Region'] == 'North America')
-                    & (df_p['Product'] == 'Desktop'),
-                    'Total Sales',
-                ].sum(),
-                2,
-            ),
-            'Laptop': round(
-                df_p.loc[
-                    (df_p['Region'] == 'North America')
-                    & (df_p['Product'] == 'Laptop'),
-                    'Total Sales',
-                ].sum(),
-                2,
-            ),
-            'Smartphone': round(
-                df_p.loc[
-                    (df_p['Region'] == 'North America')
-                    & (df_p['Product'] == 'Smartphone'),
-                    'Total Sales',
-                ].sum(),
-                2,
-            ),
-            'Smartwatch': round(
-                df_p.loc[
-                    (df_p['Region'] == 'North America')
-                    & (df_p['Product'] == 'Smartwatch'),
-                    'Total Sales',
-                ].sum(),
-                2,
-            ),
-            'Tablet': round(
-                df_p.loc[
-                    (df_p['Region'] == 'North America')
-                    & (df_p['Product'] == 'Tablet'),
-                    'Total Sales',
-                ].sum(),
-                2,
-            ),
-        },
-        {
-            'regiao': df.iloc[5, 0],
-            'location': [-8.7832, -55.4915],
-            'vendas': df.iloc[5, 1],
-            'Desktop': round(
-                df_p.loc[
-                    (df_p['Region'] == 'South America')
-                    & (df_p['Product'] == 'Desktop'),
-                    'Total Sales',
-                ].sum(),
-                2,
-            ),
-            'Laptop': round(
-                df_p.loc[
-                    (df_p['Region'] == 'South America')
-                    & (df_p['Product'] == 'Laptop'),
-                    'Total Sales',
-                ].sum(),
-                2,
-            ),
-            'Smartphone': round(
-                df_p.loc[
-                    (df_p['Region'] == 'South America')
-                    & (df_p['Product'] == 'Smartphone'),
-                    'Total Sales',
-                ].sum(),
-                2,
-            ),
-            'Smartwatch': round(
-                df_p.loc[
-                    (df_p['Region'] == 'South America')
-                    & (df_p['Product'] == 'Smartwatch'),
-                    'Total Sales',
-                ].sum(),
-                2,
-            ),
-            'Tablet': round(
-                df_p.loc[
-                    (df_p['Region'] == 'South America')
-                    & (df_p['Product'] == 'Tablet'),
-                    'Total Sales',
-                ].sum(),
-                2,
-            ),
-        },
-        {
-            'regiao': df.iloc[2, 0],
-            'location': [49.5260, 14.2551],
-            'vendas': df.iloc[2, 1],
-            'Desktop': round(
-                df_p.loc[
-                    (df_p['Region'] == 'Europe')
-                    & (df_p['Product'] == 'Desktop'),
-                    'Total Sales',
-                ].sum(),
-                2,
-            ),
-            'Laptop': round(
-                df_p.loc[
-                    (df_p['Region'] == 'Europe')
-                    & (df_p['Product'] == 'Laptop'),
-                    'Total Sales',
-                ].sum(),
-                2,
-            ),
-            'Smartphone': round(
-                df_p.loc[
-                    (df_p['Region'] == 'Europe')
-                    & (df_p['Product'] == 'Smartphone'),
-                    'Total Sales',
-                ].sum(),
-                2,
-            ),
-            'Smartwatch': round(
-                df_p.loc[
-                    (df_p['Region'] == 'Europe')
-                    & (df_p['Product'] == 'Smartwatch'),
-                    'Total Sales',
-                ].sum(),
-                2,
-            ),
-            'Tablet': round(
-                df_p.loc[
-                    (df_p['Region'] == 'Europe')
-                    & (df_p['Product'] == 'Tablet'),
-                    'Total Sales',
-                ].sum(),
-                2,
-            ),
-        },
-        {
-            'regiao': df.iloc[1, 0],
-            'location': [34.0479, 80.6197],
-            'vendas': df.iloc[1, 1],
-            'Desktop': round(
-                df_p.loc[
-                    (df_p['Region'] == 'Asia')
-                    & (df_p['Product'] == 'Desktop'),
-                    'Total Sales',
-                ].sum(),
-                2,
-            ),
-            'Laptop': round(
-                df_p.loc[
-                    (df_p['Region'] == 'Asia') & (df_p['Product'] == 'Laptop'),
-                    'Total Sales',
-                ].sum(),
-                2,
-            ),
-            'Smartphone': round(
-                df_p.loc[
-                    (df_p['Region'] == 'Asia')
-                    & (df_p['Product'] == 'Smartphone'),
-                    'Total Sales',
-                ].sum(),
-                2,
-            ),
-            'Smartwatch': round(
-                df_p.loc[
-                    (df_p['Region'] == 'Asia')
-                    & (df_p['Product'] == 'Smartwatch'),
-                    'Total Sales',
-                ].sum(),
-                2,
-            ),
-            'Tablet': round(
-                df_p.loc[
-                    (df_p['Region'] == 'Asia') & (df_p['Product'] == 'Tablet'),
-                    'Total Sales',
-                ].sum(),
-                2,
-            ),
-        },
-        {
-            'regiao': df.iloc[0, 0],
-            'location': [5.7832, 24.5085],
-            'vendas': df.iloc[0, 1],
-            'Desktop': round(
-                df_p.loc[
-                    (df_p['Region'] == 'Africa')
-                    & (df_p['Product'] == 'Desktop'),
-                    'Total Sales',
-                ].sum(),
-                2,
-            ),
-            'Laptop': round(
-                df_p.loc[
-                    (df_p['Region'] == 'Africa')
-                    & (df_p['Product'] == 'Laptop'),
-                    'Total Sales',
-                ].sum(),
-                2,
-            ),
-            'Smartphone': round(
-                df_p.loc[
-                    (df_p['Region'] == 'Africa')
-                    & (df_p['Product'] == 'Smartphone'),
-                    'Total Sales',
-                ].sum(),
-                2,
-            ),
-            'Smartwatch': round(
-                df_p.loc[
-                    (df_p['Region'] == 'Africa')
-                    & (df_p['Product'] == 'Smartwatch'),
-                    'Total Sales',
-                ].sum(),
-                2,
-            ),
-            'Tablet': round(
-                df_p.loc[
-                    (df_p['Region'] == 'Africa')
-                    & (df_p['Product'] == 'Tablet'),
-                    'Total Sales',
-                ].sum(),
-                2,
-            ),
-        },
-        {
-            'regiao': df.iloc[4, 0],
-            'location': [-25.2744, 133.7751],
-            'vendas': df.iloc[4, 1],
-            'Desktop': round(
-                df_p.loc[
-                    (df_p['Region'] == 'Oceania')
-                    & (df_p['Product'] == 'Desktop'),
-                    'Total Sales',
-                ].sum(),
-                2,
-            ),
-            'Laptop': round(
-                df_p.loc[
-                    (df_p['Region'] == 'Oceania')
-                    & (df_p['Product'] == 'Laptop'),
-                    'Total Sales',
-                ].sum(),
-                2,
-            ),
-            'Smartphone': round(
-                df_p.loc[
-                    (df_p['Region'] == 'Oceania')
-                    & (df_p['Product'] == 'Smartphone'),
-                    'Total Sales',
-                ].sum(),
-                2,
-            ),
-            'Smartwatch': round(
-                df_p.loc[
-                    (df_p['Region'] == 'Oceania')
-                    & (df_p['Product'] == 'Smartwatch'),
-                    'Total Sales',
-                ].sum(),
-                2,
-            ),
-            'Tablet': round(
-                df_p.loc[
-                    (df_p['Region'] == 'Oceania')
-                    & (df_p['Product'] == 'Tablet'),
-                    'Total Sales',
-                ].sum(),
-                2,
-            ),
-        },
-    ]
-
+    # Criando mapa
     coordenadas_centro = [0, 0]
 
     mapa = folium.Map(
         location=coordenadas_centro,
         zoom_start=2,
         min_zoom=2,
-        max_zoom=2,
+        max_zoom=3,
         max_bounds=True,
         tiles='Cartodb Positron',
     )
 
     for loc in localizacao:
         popup_html = f"""
-            <h4 style="margin:0;padding:0;">{loc['regiao']}</h4>
-            <p style="margin:0;padding:0;">Total de Produtos Vendidos: {loc['vendas']}</p>
-            <p style="margin:0;padding:0;">Faturamento Desktop: {loc['Desktop']}</p>
-            <p style="margin:0;padding:0;">Faturamento Laptop: {loc['Laptop']}</p>
-            <p style="margin:0;padding:0;">Faturamento Smartphone: {loc['Smartphone']}</p>
-            <p style="margin:0;padding:0;">Faturamento Smartwatch: {loc['Smartwatch']}</p>
-            <p style="margin:0;padding:0;">Faturamento Tablet: {loc['Tablet']}</p>
+            <h1 style="margin:0;padding:0;"><b>{loc['regiao']}</b></h1>
+            <h4 style="margin:0;padding:0;">Vendas Totais: <b>{loc['vendas']:.2f}</b></h4>
+            <h5 style="margin:0;padding:0;"><b>Faturamento detalhado por produto</b></h5>
+            <p style="margin:0;padding:0;">Desktop: <b>{loc['Desktop']:.2f}</b></p>
+            <p style="margin:0;padding:0;">Laptop: <b>{loc['Laptop']:.2f}</b></p>
+            <p style="margin:0;padding:0;">Smartphone: <b>{loc['Smartphone']:.2f}</b></p>
+            <p style="margin:0;padding:0;">Smartwatch: <b>{loc['Smartwatch']:.2f}</b></p>
+            <p style="margin:0;padding:0;">Tablet: <b>{loc['Tablet']:.2f}</b></p>
         """
         folium.Marker(
             location=loc['location'],

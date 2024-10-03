@@ -1,7 +1,13 @@
-# Dashboar de Faturamento Global 
+# Dashboar de Faturamento Global
 
-Equipe:
-- Cahu
-- Gabriel
-- Saulo
-- Wiliams
+**Equipe**:
+- Cahu Silva
+- Gabriel Santana
+- Saulo Bernardo
+- Wiliams Alves
+
+## Objetivo
+
+## Insights
+
+## Conclusão
