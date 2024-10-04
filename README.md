@@ -6,6 +6,9 @@
 - Saulo Bernardo
 - Wiliams Alves
 
+## Contextualização
+A multinacional “Device Corporation” tem enfrentado problemas para tomar decisões na logística de vendas de seus produtos eletrônicos e quantidade de equipamentos eletrônico nas regiões destacadas. Ao mostrarmos o total de vendas em 2022 a 2024 nas regiões, podemos indicar curvas de consumo para prospecção de vendas.
+
 ## Objetivo
 Criação de um dashboard de faturamento global, onde facilitará a visualização dos dados de faturamento da companhia. Na ferramenta encontrará uma visão abrangente do desempenho financeiro da empresa em diferentes regiões do mundo, além de uma análise detalhada por produto. A ferramenta deverá projetada deverá ser capaz de fornecer insights valiosos que ajudarão na tomada de decisões estratégicas.
 
